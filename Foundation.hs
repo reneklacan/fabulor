@@ -20,6 +20,7 @@ data App = App
     , appHttpManager :: Manager
     , appLogger      :: Logger
     , channel        :: TChan Text
+    , channels       :: TVar (IntMap (TChan Text))
     }
 
 instance HasHttpManager App where

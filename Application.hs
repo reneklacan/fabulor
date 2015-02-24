@@ -13,6 +13,7 @@ module Application
     ) where
 
 import Control.Monad.Logger                 (liftLoc, runLoggingT)
+import qualified Data.IntMap                as IntMap
 import Database.Persist.Sqlite              (createSqlitePool, runSqlPool,
                                              sqlDatabase, sqlPoolSize)
 import Import
@@ -58,8 +59,9 @@ makeFoundation appSettings = do
     -- logging function. To get out of this loop, we initially create a
     -- temporary foundation without a real connection pool, get a log function
     -- from there, and then create the real foundation.
-    chan <- atomically newBroadcastTChan
-    let mkFoundation appConnPool = App { channel = chan, ..}
+    channel <- atomically newBroadcastTChan
+    channels <- newTVarIO IntMap.empty
+    let mkFoundation appConnPool = App { .. }
         tempFoundation = mkFoundation $ error "connPool forced in tempFoundation"
         logFunc = messageLoggerSource tempFoundation appLogger
 
