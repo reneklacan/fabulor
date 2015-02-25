@@ -7,8 +7,8 @@ import qualified Data.IntMap as IntMap
 import Data.Monoid ((<>))
 import Control.Concurrent.STM.Lifted
 
-chatApp :: TChan Text -> WebSocketsT Handler ()
-chatApp wChan = do
+chatApp :: Int -> TChan Text -> WebSocketsT Handler ()
+chatApp roomId wChan = do
     sendTextData ("Welcome to the chat server, please enter your name." :: Text)
     name <- receiveData
     sendTextData $ "Welcome, " <> name
@@ -20,7 +20,7 @@ chatApp wChan = do
             atomically (readTChan rChan) >>= sendTextData
         )
         (sourceWS $$ mapM_C (\msg -> do
-            _ <- lift . runDB $ insert $ Message msg 2 name
+            _ <- lift . runDB $ insert $ Message roomId name msg
             atomically $ do
                 writeTChan wChan $ name <> ": " <> msg
         ))
@@ -38,6 +38,6 @@ getChatR roomId = do
             Just c -> fmap Just $ dupTChan c
     case chan of
         Nothing -> return ()
-        Just c -> webSockets $ chatApp c
+        Just c -> webSockets $ chatApp roomId c
     messages <- runDB $ selectList [MessageRoomId ==. roomId] [Asc MessageId]
     defaultLayout $ $(widgetFile "chat")
