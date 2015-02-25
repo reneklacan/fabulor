@@ -19,7 +19,6 @@ data App = App
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
     , appHttpManager :: Manager
     , appLogger      :: Logger
-    , channel        :: TChan Text
     , channels       :: TVar (IntMap (TChan Text))
     }
 
