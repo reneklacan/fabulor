@@ -1,3 +1,6 @@
 <div #output>
+    $forall Entity _ message <- messages
+        <p>
+            #{messageUsername message}: #{messageText message}
 <form #form>
     <input #input autofocus>

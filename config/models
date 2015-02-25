@@ -10,7 +10,7 @@ Email
     UniqueEmail email
 Message
     text Text
-    room_id Int
+    roomId Int
     username Text
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
