@@ -1,6 +1,6 @@
 <div #output>
     $forall Entity _ message <- messages
         <p>
-            #{messageUsername message}: #{messageText message}
+            #{formatTime defaultTimeLocale "%H:%M:%S" $ messageCreatedAt message} #{messageUsername message}: #{messageValue message}
 <form #form>
     <input #input autofocus>

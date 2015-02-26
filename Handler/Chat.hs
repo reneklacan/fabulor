@@ -9,7 +9,8 @@ import Control.Concurrent.STM.Lifted
 
 chatApp :: Int -> Text -> TChan Text -> WebSocketsT Handler ()
 chatApp roomId username wChan = do
-    let joinMsg = Message roomId username " has joined the room"
+    jTime <- liftIO getCurrentTime
+    let joinMsg = Message roomId username "event" " has joined the room" jTime
     let joinMsgDump = dumpMessage joinMsg
     _ <- lift . runDB $ insert joinMsg
     sendTextData joinMsgDump
@@ -21,7 +22,8 @@ chatApp roomId username wChan = do
             atomically (readTChan rChan) >>= sendTextData
         )
         (sourceWS $$ mapM_C (\text -> do
-            let msg = Message roomId username text
+            time <- liftIO getCurrentTime
+            let msg = Message roomId username "message" text time
             _ <- lift . runDB $ insert msg
             atomically $ do
                 writeTChan wChan $ dumpMessage msg
@@ -32,7 +34,9 @@ dumpMessage :: Message -> Text
 dumpMessage message = do
     "{" <> \
         "\"username\":\"" <> (messageUsername message) <> "\"," <> \
-        "\"text\":\"" <> (messageText message) <> "\"" <> \
+        "\"type\":\"" <> (messageType message) <> "\"," <> \
+        "\"value\":\"" <> (messageValue message) <> "\"," <> \
+        "\"createdAt\":\"" <> (pack $ show $ messageCreatedAt message) <> "\"" <> \
     "}"
 
 getChatR :: Int -> Handler Html
@@ -49,6 +53,6 @@ getChatR roomId = do
             Just c -> fmap Just $ dupTChan c
     case chan of
         Nothing -> return ()
-        Just c -> webSockets $ chatApp roomId (userIdent user) c
+        Just c -> webSockets $ chatApp roomId (userEmail user) c
     messages <- runDB $ selectList [MessageRoomId ==. roomId] [Asc MessageId]
     defaultLayout $ $(widgetFile "chat")

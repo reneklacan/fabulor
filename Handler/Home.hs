@@ -15,4 +15,3 @@ getHomeR = do
     maid <- maybeAuthId
     defaultLayout $ do
         $(widgetFile "homepage")
-

@@ -7,11 +7,25 @@ var url = document.URL,
 url = url.replace("http:", "ws:").replace("https:", "wss:");
 conn = new WebSocket(url);
 
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function messageToStr(message) {
+    var date = new Date(message.createdAt);
+    var time = date.getHours() + ':' +
+               pad(date.getMinutes(), 2) + ':' +
+               pad(date.getSeconds(), 2);
+    return time + ' ' + message.username + ': ' + message.value;
+}
+
 conn.onmessage = function(e) {
     var p = document.createElement("p");
     console.log(e.data);
     var message = JSON.parse(e.data);
-    p.appendChild(document.createTextNode(message.username + ': ' + message.text));
+    p.appendChild(document.createTextNode(messageToStr(message)));
     output.appendChild(p);
 };
 
