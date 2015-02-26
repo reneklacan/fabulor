@@ -4,6 +4,8 @@
 $maybe _ <- maid
     <p>
         <a href=@{AuthR LogoutR}>Logout
+        <br>
+        <a href=@{ChatR 7}>Go to chat room 7
 $nothing
     <p>
         <a href=@{AuthR LoginR}>Go to the login page

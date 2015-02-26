@@ -7,10 +7,9 @@ import qualified Data.IntMap as IntMap
 import Data.Monoid ((<>))
 import Control.Concurrent.STM.Lifted
 
-chatApp :: Int -> TChan Text -> WebSocketsT Handler ()
-chatApp roomId wChan = do
-    name <- receiveData
-    let joinMsg = Message roomId name " has joined the room"
+chatApp :: Int -> Text -> TChan Text -> WebSocketsT Handler ()
+chatApp roomId username wChan = do
+    let joinMsg = Message roomId username " has joined the room"
     let joinMsgDump = dumpMessage joinMsg
     _ <- lift . runDB $ insert joinMsg
     sendTextData joinMsgDump
@@ -22,7 +21,7 @@ chatApp roomId wChan = do
             atomically (readTChan rChan) >>= sendTextData
         )
         (sourceWS $$ mapM_C (\text -> do
-            let msg = Message roomId name text
+            let msg = Message roomId username text
             _ <- lift . runDB $ insert msg
             atomically $ do
                 writeTChan wChan $ dumpMessage msg
@@ -38,6 +37,7 @@ dumpMessage message = do
 
 getChatR :: Int -> Handler Html
 getChatR roomId = do
+    (Entity _ user) <- requireAuth
     App {..} <- getYesod
     chan <- liftIO $ atomically $ do
         m <- readTVar channels
@@ -49,6 +49,6 @@ getChatR roomId = do
             Just c -> fmap Just $ dupTChan c
     case chan of
         Nothing -> return ()
-        Just c -> webSockets $ chatApp roomId c
+        Just c -> webSockets $ chatApp roomId (userIdent user) c
     messages <- runDB $ selectList [MessageRoomId ==. roomId] [Asc MessageId]
     defaultLayout $ $(widgetFile "chat")
