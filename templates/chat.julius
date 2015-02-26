@@ -9,7 +9,9 @@ conn = new WebSocket(url);
 
 conn.onmessage = function(e) {
     var p = document.createElement("p");
-    p.appendChild(document.createTextNode(e.data));
+    console.log(e.data);
+    var message = JSON.parse(e.data);
+    p.appendChild(document.createTextNode(message.username + ': ' + message.text));
     output.appendChild(p);
 };
 
@@ -18,3 +20,7 @@ form.addEventListener("submit", function(e){
     input.value = "";
     e.preventDefault();
 });
+
+window.onbeforeunload = function(e) {
+    conn.send('left the room');
+};

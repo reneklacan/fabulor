@@ -10,19 +10,22 @@ import Control.Concurrent.STM.Lifted
 chatApp :: Int -> TChan Text -> WebSocketsT Handler ()
 chatApp roomId wChan = do
     name <- receiveData
+    let joinMsg = Message roomId name " has joined the room"
+    let joinMsgDump = dumpMessage joinMsg
+    _ <- lift . runDB $ insert joinMsg
+    sendTextData joinMsgDump
     rChan <- atomically $ do
-        let message = Message roomId name " has joined the chat"
-        writeTChan wChan $ dumpMessage message
+        writeTChan wChan joinMsgDump
         dupTChan wChan
     race_
         (forever $ do
             atomically (readTChan rChan) >>= sendTextData
         )
-        (sourceWS $$ mapM_C (\msg -> do
-            let message = Message roomId name msg
-            _ <- lift . runDB $ insert message
+        (sourceWS $$ mapM_C (\text -> do
+            let msg = Message roomId name text
+            _ <- lift . runDB $ insert msg
             atomically $ do
-                writeTChan wChan $ dumpMessage message
+                writeTChan wChan $ dumpMessage msg
         ))
 
 -- TODO: Use Aeson intead of this logic
