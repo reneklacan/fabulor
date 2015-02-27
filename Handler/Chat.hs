@@ -1,17 +1,18 @@
 module Handler.Chat where
 
-import Import hiding (atomically,(<>))
+import Import hiding (atomically,(<>),ByteString)
 
 import Yesod.WebSockets
 import qualified Data.IntMap as IntMap
-import Data.Monoid ((<>))
 import Control.Concurrent.STM.Lifted
+import Data.Aeson (encode)
+import Data.ByteString.Lazy.Internal
 
-chatApp :: Int -> Text -> TChan Text -> WebSocketsT Handler ()
+chatApp :: Int -> Text -> TChan ByteString -> WebSocketsT Handler ()
 chatApp roomId username wChan = do
     jTime <- liftIO getCurrentTime
     let joinMsg = Message roomId username "event" " has joined the room" jTime
-    let joinMsgDump = dumpMessage joinMsg
+    let joinMsgDump = encode joinMsg
     _ <- lift . runDB $ insert joinMsg
     sendTextData joinMsgDump
     rChan <- atomically $ do
@@ -26,18 +27,8 @@ chatApp roomId username wChan = do
             let msg = Message roomId username "message" text time
             _ <- lift . runDB $ insert msg
             atomically $ do
-                writeTChan wChan $ dumpMessage msg
+                writeTChan wChan $ encode msg
         ))
-
--- TODO: Use Aeson intead of this logic
-dumpMessage :: Message -> Text
-dumpMessage message = do
-    "{" <> \
-        "\"username\":\"" <> (messageUsername message) <> "\"," <> \
-        "\"type\":\"" <> (messageType message) <> "\"," <> \
-        "\"value\":\"" <> (messageValue message) <> "\"," <> \
-        "\"createdAt\":\"" <> (pack $ show $ messageCreatedAt message) <> "\"" <> \
-    "}"
 
 getChatR :: Int -> Handler Html
 getChatR roomId = do
