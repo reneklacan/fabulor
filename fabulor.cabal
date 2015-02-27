@@ -87,8 +87,6 @@ library
                  , conduit-combinators
                  , stm-lifted
                  , language-javascript
-                 --, alex
-                 --, happy
 
 executable         fabulor
     if flag(library-only)
