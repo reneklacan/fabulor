@@ -87,6 +87,7 @@ library
                  , conduit-combinators
                  , stm-lifted
                  , language-javascript
+                 , esqueleto
 
 executable         fabulor
     if flag(library-only)
