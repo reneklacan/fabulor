@@ -9,6 +9,7 @@ import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import Data.ByteString.Lazy.Internal
+import qualified Data.Map as M
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -20,7 +21,7 @@ data App = App
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
     , appHttpManager :: Manager
     , appLogger      :: Logger
-    , channels       :: TVar (IntMap (TChan ByteString))
+    , channels       :: TVar (M.Map (Key Room) (TChan ByteString))
     }
 
 instance HasHttpManager App where

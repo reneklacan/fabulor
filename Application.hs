@@ -13,7 +13,7 @@ module Application
     ) where
 
 import Control.Monad.Logger                 (liftLoc, runLoggingT)
-import qualified Data.IntMap                as IntMap
+import qualified Data.Map                   as M
 import Database.Persist.Sqlite              (createSqlitePool, runSqlPool,
                                              sqlDatabase, sqlPoolSize)
 import Import
@@ -55,7 +55,7 @@ makeFoundation appSettings = do
         (appStaticDir appSettings)
 
     -- Chat channels map
-    channels <- newTVarIO IntMap.empty
+    channels <- newTVarIO M.empty
 
     -- We need a log function to create a connection pool. We need a connection
     -- pool to create our foundation. And we need our foundation to get a

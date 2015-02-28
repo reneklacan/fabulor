@@ -4,8 +4,16 @@ User
     UniqueUser email
     deriving Typeable
     deriving Show
+Room
+    name Text
+    deriving Show
+RoomAccess
+    userId UserId
+    roomId RoomId
+    lastSeenAt UTCTime default=CURRENT_TIME
+    deriving Show
 Message
-    roomId Int
+    roomId RoomId
     username Text
     type Text
     value Text

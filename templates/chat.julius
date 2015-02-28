@@ -25,10 +25,15 @@ function createMessage(type, value) {
     return {
         username: "",
         type: type,
-        value: value,
+        value: value || '',
         roomId: 0,
         createdAt: "0000-00-00T00:00:00.000Z",
     };
+}
+
+function sendPingMessage() {
+    console.log('ping');
+    conn.send(JSON.stringify(createMessage('ping')));
 }
 
 conn.onmessage = function(e) {
@@ -48,3 +53,5 @@ form.addEventListener("submit", function(e){
 window.onbeforeunload = function(e) {
     conn.send(JSON.stringify(createMessage('event', 'left the room')));
 };
+
+setInterval(sendPingMessage, 5000);

@@ -13,5 +13,6 @@ import Import
 getHomeR :: Handler Html
 getHomeR = do
     maid <- maybeAuthId
+    rooms <- runDB $ selectList [] [Desc RoomId]
     defaultLayout $ do
         $(widgetFile "homepage")

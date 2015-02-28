@@ -5,7 +5,9 @@ $maybe _ <- maid
     <p>
         <a href=@{AuthR LogoutR}>Logout
         <br>
-        <a href=@{ChatR 7}>Go to chat room 7
+        $forall Entity roomId room <- rooms
+            <a href=@{ChatR roomId}>Go to chat room #{roomName room}
+            <br>
 $nothing
     <p>
         <a href=@{AuthR LoginR}>Go to the login page
