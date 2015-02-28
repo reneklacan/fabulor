@@ -21,6 +21,16 @@ function messageToStr(message) {
     return time + ' ' + message.username + ': ' + message.value;
 }
 
+function createMessage(type, value) {
+    return {
+        username: "",
+        type: type,
+        value: value,
+        roomId: 0,
+        createdAt: "0000-00-00T00:00:00.000Z",
+    };
+}
+
 conn.onmessage = function(e) {
     var p = document.createElement("p");
     console.log(e.data);
@@ -30,11 +40,11 @@ conn.onmessage = function(e) {
 };
 
 form.addEventListener("submit", function(e){
-    conn.send(input.value);
+    conn.send(JSON.stringify(createMessage('message', input.value)));
     input.value = "";
     e.preventDefault();
 });
 
 window.onbeforeunload = function(e) {
-    conn.send('left the room');
+    conn.send(JSON.stringify(createMessage('event', 'left the room')));
 };

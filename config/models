@@ -3,9 +3,11 @@ User
     password Text Maybe
     UniqueUser email
     deriving Typeable
+    deriving Show
 Message
     roomId Int
     username Text
     type Text
     value Text
     createdAt UTCTime default=CURRENT_TIME
+    deriving Show
