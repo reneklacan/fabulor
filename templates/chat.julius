@@ -18,7 +18,7 @@ function messageToStr(message) {
     var time = date.getHours() + ':' +
                pad(date.getMinutes(), 2) + ':' +
                pad(date.getSeconds(), 2);
-    return time + ' ' + message.username + ': ' + message.value;
+    return '<b>' + message.username + '</b> (' + time + '): ' + message.value;
 }
 
 function createMessage(type, value) {
@@ -31,17 +31,28 @@ function createMessage(type, value) {
     };
 }
 
-function sendPingMessage() {
-    console.log('ping');
-    conn.send(JSON.stringify(createMessage('ping')));
+function sendStatusMessage() {
+    console.log('ping sent');
+    conn.send(JSON.stringify(createMessage('status')));
 }
 
-conn.onmessage = function(e) {
-    var p = document.createElement("p");
-    console.log(e.data);
-    var message = JSON.parse(e.data);
-    p.appendChild(document.createTextNode(messageToStr(message)));
-    output.appendChild(p);
+conn.onmessage = function(event) {
+    var message = JSON.parse(event.data);
+
+    console.log(message);
+
+    switch (message.type) {
+        case 'message':
+        case 'event':
+            var p = document.createElement("p");
+            p.innerHTML = messageToStr(message);
+            output.appendChild(p);
+            window.scrollTo(0, document.body.scrollHeight);
+            break;
+        case 'status':
+            console.log('status received');
+            break;
+    }
 };
 
 form.addEventListener("submit", function(e){
@@ -54,4 +65,4 @@ window.onbeforeunload = function(e) {
     conn.send(JSON.stringify(createMessage('event', 'left the room')));
 };
 
-setInterval(sendPingMessage, 5000);
+setInterval(sendStatusMessage, 5000);

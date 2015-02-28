@@ -7,12 +7,29 @@ import Control.Concurrent.STM.Lifted
 import Data.Aeson (encode,eitherDecode)
 import Data.ByteString.Lazy.Internal
 import qualified Data.Map as M
+import qualified Database.Esqueleto as E
+import Database.Esqueleto ((^.))
 
-data Chat = Chat { roomId :: RoomId
-                 , room :: Room
-                 , userId :: UserId
-                 , user :: User
-                 , channel :: TChan ByteString }
+data Chat = Chat
+    { roomId :: RoomId
+    , room :: Room
+    , userId :: UserId
+    , user :: User
+    , channel :: TChan ByteString
+    }
+
+data RoomUserStatus = RoomUserStatus
+    { statusUserId :: UserId
+    , statusUserEmail :: Text
+    , userLastSeenAt :: UTCTime
+    } deriving Show
+
+instance ToJSON RoomUserStatus where
+    toJSON (RoomUserStatus userId email lastSeenAt)
+        = object
+            [ "userId" .= userId
+            , "username" .= email
+            , "lastSeenAt" .= lastSeenAt ]
 
 getChatR :: RoomId -> Handler Html
 getChatR roomId = do
@@ -42,10 +59,10 @@ chatApp chat = do
     sendTextData joinMsgDump
     rChan <- atomically $ do
         writeTChan (channel chat) joinMsgDump
-        dupTChan (channel chat)
+        dupTChan $ channel chat
     race_
         (forever $ atomically (readTChan rChan) >>= sendTextData)
-        (sourceWS $$ mapM_C (handleMsg chat))
+        (sourceWS $$ mapM_C $ handleMsg chat)
 
 handleMsg :: Chat -> ByteString -> WebSocketsT Handler ()
 handleMsg chat text = do
@@ -58,7 +75,7 @@ handleMsg chat text = do
             case messageType msg of
                 "message" -> broadcastMsg chat msg
                 "event" -> broadcastMsg chat msg
-                "ping" -> checkMsg chat
+                "status" -> statusMsg chat
                 _ -> return ()
 
 broadcastMsg :: Chat -> Message -> WebSocketsT Handler ()
@@ -71,10 +88,23 @@ broadcastMsg chat baseMsg = do
     atomically $ do
         writeTChan (channel chat) $ encode msg
 
-checkMsg :: Chat -> WebSocketsT Handler ()
-checkMsg chat = do
+statusMsg :: Chat -> WebSocketsT Handler ()
+statusMsg chat = do
     time <- liftIO getCurrentTime
-    _ <- lift . runDB $ do
-        updateWhere [RoomAccessUserId ==. userId chat, RoomAccessRoomId ==. roomId chat]
-                    [RoomAccessLastSeenAt =. time]
-    putStrLn "ping"
+    statusEntities <- lift . runDB $ do
+        updateWhere
+            [RoomAccessUserId ==. userId chat, RoomAccessRoomId ==. roomId chat]
+            [RoomAccessLastSeenAt =. time]
+        E.select $
+            E.from $ \(user `E.InnerJoin` room_access) -> do
+            E.on $ user ^. UserId E.==. room_access ^. RoomAccessUserId
+            E.where_ $ room_access ^. RoomAccessRoomId E.==. (E.val (roomId chat))
+            return ( user ^. UserId
+                   , user ^. UserEmail
+                   , room_access ^. RoomAccessLastSeenAt )
+    atomically $ do
+        writeTChan (channel chat) $ encode $ fmap userStatusFromEntity statusEntities
+
+userStatusFromEntity :: (E.Value UserId, E.Value Text, E.Value UTCTime) -> RoomUserStatus
+userStatusFromEntity (userId, email, lastSeenAt) =
+    RoomUserStatus (E.unValue userId) (E.unValue email) (E.unValue lastSeenAt)
