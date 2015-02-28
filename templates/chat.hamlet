@@ -1,6 +1,15 @@
-<div #output>
-    $forall Entity _ message <- messages
-        <p>
-            #{formatTime defaultTimeLocale "%H:%M:%S" $ messageCreatedAt message} #{messageUsername message}: #{messageValue message}
-<form #form>
-    <input #input autofocus>
+<div class="container">
+  <div class="row">
+    <div #output class="col-sm-9">
+      $forall Entity _ message <- messages
+          <p>
+              <b> #{messageUsername message}
+              (#{formatTime defaultTimeLocale "%H:%M:%S" $ messageCreatedAt message}):
+              #{messageValue message}
+    <div #output class="col-sm-3">
+<div #footer>
+  <div class="container">
+    <div class="row">
+      <form #form>
+        <div class="col-sm-12">
+          <input #input id="message-input" class="form-control">

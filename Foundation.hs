@@ -68,6 +68,7 @@ instance Yesod App where
         let js_bootstrap_min_js = StaticRoute ["js", "bootstrap.min.js"] []
 
         pc <- widgetToPageContent $ do
+            addStylesheet $ StaticR $ css_app_css
             addStylesheet $ StaticR $ css_bootstrap_min_css
             addScript $ StaticR $ js_jquery_min_js
             addScript $ StaticR $ js_bootstrap_min_js
