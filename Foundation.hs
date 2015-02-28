@@ -62,8 +62,15 @@ instance Yesod App where
         -- value passed to hamletToRepHtml cannot be a widget, this allows
         -- you to use normal widget features in default-layout.
 
+        -- Because autogeneration doesn't work as it probably should
+        let css_bootstrap_min_css = StaticRoute ["css", "bootstrap.min.css"] []
+        let js_jquery_min_js = StaticRoute ["js", "jquery-1.11.2.min.js"] []
+        let js_bootstrap_min_js = StaticRoute ["js", "bootstrap.min.js"] []
+
         pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_bootstrap_css
+            addStylesheet $ StaticR $ css_bootstrap_min_css
+            addScript $ StaticR $ js_jquery_min_js
+            addScript $ StaticR $ js_bootstrap_min_js
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
