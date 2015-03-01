@@ -1,3 +1,4 @@
 $maybe msg <- mmsg
-  <div #message>#{msg}
+  <div class="container">
+    <div #message>#{msg}
 ^{widget}

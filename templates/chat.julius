@@ -47,7 +47,8 @@ conn.onmessage = function(event) {
             var p = document.createElement("p");
             p.innerHTML = messageToStr(message);
             output.appendChild(p);
-            window.scrollTo(0, document.body.scrollHeight);
+            messagesWrapper = document.querySelector('.messages-wrapper');
+            messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
             break;
         case 'status':
             console.log('status received');

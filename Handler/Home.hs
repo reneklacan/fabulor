@@ -1,6 +1,7 @@
 module Handler.Home where
 
 import Import
+--import Database.Persist.Sql (fromSqlKey)
 --import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3, withSmallInput)
 
 -- This is a handler function for the GET request method on the HomeR
@@ -12,7 +13,8 @@ import Import
 -- inclined, or create a single monolithic file.
 getHomeR :: Handler Html
 getHomeR = do
-    maid <- maybeAuthId
+    _ <- requireAuthId
+    (Entity _ user) <- requireAuth
     rooms <- runDB $ selectList [] [Desc RoomId]
     defaultLayout $ do
         $(widgetFile "homepage")

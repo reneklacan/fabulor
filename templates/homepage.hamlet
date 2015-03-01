@@ -1,13 +1,18 @@
-<h1>Welcome!
-
-<p>Your current auth ID: #{show maid}
-$maybe _ <- maid
-    <p>
-        <a href=@{AuthR LogoutR}>Logout
-        <br>
+^{navbar}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <table class="table table-striped">
+        <tr>
+          <!--th>ID-->
+          <th>Room Name
+          <th>
         $forall Entity roomId room <- rooms
-            <a href=@{ChatR roomId}>Go to chat room #{roomName room}
-            <br>
-$nothing
-    <p>
-        <a href=@{AuthR LoginR}>Go to the login page
+          <tr>
+            <!--td>#{fromSqlKey $ roomId}-->
+            <td>#{roomName room}
+            <td>
+              <div class="pull-right">
+                $if userIsAdmin user
+                  <a class="btn btn-warning btn-sm" href=@{ChatR roomId}>Setting
+                <a class="btn btn-success btn-sm" href=@{ChatR roomId}>Chat
