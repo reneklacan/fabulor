@@ -5,4 +5,4 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
-/rooms/#RoomId/chat ChatR GET
+/rooms/#RoomId/chat RoomChatR GET

@@ -22,7 +22,7 @@ library
                      Settings.StaticFiles
                      Handler.Common
                      Handler.Home
-                     Handler.Chat
+                     Handler.RoomChat
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

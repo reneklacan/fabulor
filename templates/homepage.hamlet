@@ -14,5 +14,5 @@
             <td>
               <div class="pull-right">
                 $if userIsAdmin user
-                  <a class="btn btn-warning btn-sm" href=@{ChatR roomId}>Setting
-                <a class="btn btn-success btn-sm" href=@{ChatR roomId}>Chat
+                  <a class="btn btn-warning btn-sm" href=@{RoomChatR roomId}>Setting
+                <a class="btn btn-success btn-sm" href=@{RoomChatR roomId}>Chat

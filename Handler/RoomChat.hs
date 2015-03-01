@@ -1,4 +1,4 @@
-module Handler.Chat where
+module Handler.RoomChat where
 
 import Import hiding (atomically,(<>),ByteString)
 
@@ -31,8 +31,8 @@ instance ToJSON RoomUserStatus where
             , "username" .= email
             , "lastSeenAt" .= lastSeenAt ]
 
-getChatR :: RoomId -> Handler Html
-getChatR roomId = do
+getRoomChatR :: RoomId -> Handler Html
+getRoomChatR roomId = do
     (Entity userId user) <- requireAuth
     room <- runDB $ get404 roomId
     App {..} <- getYesod
