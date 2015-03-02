@@ -5,5 +5,6 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
-/rooms/#RoomId/chat RoomChatR GET
 /rooms/create RoomCreateR GET POST
+/rooms/#RoomId/chat RoomChatR GET
+/rooms/#RoomId/delete RoomDeleteR GET
