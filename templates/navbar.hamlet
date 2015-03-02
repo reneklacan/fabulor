@@ -4,7 +4,7 @@
       <a class="navbar-brand" href=@{HomeR}>Chat</a>
       <ul class="nav navbar-nav pull-right">
         <li>
-          <a href="#">Rooms
+          <a href=@{RoomListR}>Rooms
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav pull-right">
         <li>

@@ -8,3 +8,4 @@
 /rooms/create RoomCreateR GET POST
 /rooms/#RoomId/chat RoomChatR GET
 /rooms/#RoomId/delete RoomDeleteR GET
+/rooms RoomListR GET
