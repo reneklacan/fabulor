@@ -38,6 +38,7 @@ import Handler.RoomCreate
 import Handler.RoomDelete
 import Handler.RoomList
 import Handler.RoomAccess
+import Handler.RoomSettings
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the

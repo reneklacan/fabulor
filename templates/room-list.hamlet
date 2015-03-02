@@ -17,5 +17,5 @@
               <div class="pull-right">
                 <a class="btn btn-success btn-sm" href=@{RoomChatR roomId}>Chat
                 $if userIsAdmin user
-                  <a class="btn btn-warning btn-sm" href=@{RoomChatR roomId}>Setting
+                  <a class="btn btn-warning btn-sm" href=@{RoomSettingsR roomId}>Setting
                   <a class="btn btn-danger btn-sm" href=@{RoomDeleteR roomId}>Delete

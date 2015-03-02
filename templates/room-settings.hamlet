@@ -1,0 +1,14 @@
+^{navbar}
+<div.container ng-controller="RoomSettingsController">
+  <div.row>
+    <div.col-sm-12>
+      <table.table.table-bordered>
+        $forall AccessInfo uid user hasAccess <- users
+          <tr>
+            <td>#{fromSqlKey uid}
+            <td>#{userEmail user}
+            <td>
+              $if hasAccess
+                Has access
+              $else
+                Doesn't have access
