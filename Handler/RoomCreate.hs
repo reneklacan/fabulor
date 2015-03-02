@@ -2,6 +2,12 @@ module Handler.RoomCreate where
 
 import Import
 
+import Yesod.Form.Bootstrap3
+    ( BootstrapFormLayout (..)
+    , BootstrapGridOptions(..)
+    , renderBootstrap3
+    , withSmallInput )
+
 getRoomCreateR :: Handler Html
 getRoomCreateR = do
     (roomWidget, enctype) <- generateFormPost roomForm
@@ -23,6 +29,14 @@ postRoomCreateR = do
 roomForm :: Form Room
 roomForm = renderDivs $ Room
     <$> areq (bootstrapTextField "Name") "" Nothing
+
+bootstrapHorizontalForm :: BootstrapFormLayout
+bootstrapHorizontalForm = BootstrapHorizontalForm (ColSm 0) (ColSm 2) (ColSm 0) (ColSm 10)
+
+-- form-control class is missing in generated input
+roomForm' :: Form Room
+roomForm' = renderBootstrap3 bootstrapHorizontalForm $ Room
+    <$> areq textField "Name" Nothing
 
 bootstrapField :: Text -> (Text -> a) -> Text -> Field Handler a
 bootstrapField tag fromText label = Field
