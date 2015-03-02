@@ -6,3 +6,4 @@
 
 / HomeR GET
 /rooms/#RoomId/chat RoomChatR GET
+/rooms/create RoomCreateR GET POST

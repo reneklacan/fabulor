@@ -57,9 +57,14 @@ conn.onmessage = function(event) {
 };
 
 form.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    if (!input.value) {
+        return;
+    }
+
     conn.send(JSON.stringify(createMessage('message', input.value)));
     input.value = "";
-    e.preventDefault();
 });
 
 window.onbeforeunload = function(e) {
