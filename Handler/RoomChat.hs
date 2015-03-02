@@ -48,7 +48,7 @@ getRoomChatR roomId = do
         Nothing -> return ()
         Just c -> webSockets $ chatApp $ Chat roomId room userId user c
     messages <- runDB $ selectList [MessageRoomId ==. roomId] [Asc MessageId]
-    defaultLayout $ $(widgetFile "chat")
+    defaultLayout $ $(widgetFile "room-chat")
 
 chatApp :: Chat -> WebSocketsT Handler ()
 chatApp chat = do
