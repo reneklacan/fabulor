@@ -5,7 +5,7 @@ Simple chat app written in Haskell for exercise
 ## Install
 
 ```
-cabal install esod-bin
+cabal install yesod-bin
 cd fabulor
 cabal sandbox init
 cabal install alex happy
