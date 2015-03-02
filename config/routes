@@ -9,3 +9,4 @@
 /rooms/#RoomId/chat RoomChatR GET
 /rooms/#RoomId/delete RoomDeleteR GET
 /rooms RoomListR GET
+/rooms/#RoomId/users/#UserId RoomAccessR POST DELETE
