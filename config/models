@@ -1,6 +1,7 @@
 User
     email Text
     password Text Maybe
+    name Text Maybe
     isAdmin Bool
     UniqueUser email
     deriving Typeable

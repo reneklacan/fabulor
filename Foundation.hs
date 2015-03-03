@@ -139,6 +139,7 @@ instance YesodAuth App where
                 fmap Just $ insert User
                     { userEmail = credsIdent creds
                     , userPassword = Nothing
+                    , userName = Nothing
                     , userIsAdmin = False
                     }
 
