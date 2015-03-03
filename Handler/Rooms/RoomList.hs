@@ -1,4 +1,4 @@
-module Handler.RoomList where
+module Handler.Rooms.RoomList where
 
 import Import
 

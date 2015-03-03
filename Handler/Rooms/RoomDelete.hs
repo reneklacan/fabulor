@@ -1,4 +1,4 @@
-module Handler.RoomDelete where
+module Handler.Rooms.RoomDelete where
 
 import Import
 

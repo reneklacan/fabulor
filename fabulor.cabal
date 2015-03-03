@@ -23,12 +23,12 @@ library
                      Helper.Bootstrap
                      Handler.Common
                      Handler.Home
-                     Handler.RoomChat
-                     Handler.RoomCreate
-                     Handler.RoomDelete
-                     Handler.RoomList
-                     Handler.RoomAccess
-                     Handler.RoomSettings
+                     Handler.Rooms.RoomChat
+                     Handler.Rooms.RoomCreate
+                     Handler.Rooms.RoomDelete
+                     Handler.Rooms.RoomList
+                     Handler.Rooms.RoomAccess
+                     Handler.Rooms.RoomSettings
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

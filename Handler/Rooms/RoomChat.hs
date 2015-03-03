@@ -1,4 +1,4 @@
-module Handler.RoomChat where
+module Handler.Rooms.RoomChat where
 
 import Import hiding (atomically,(<>),ByteString)
 
