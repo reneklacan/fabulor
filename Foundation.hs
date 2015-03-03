@@ -64,12 +64,12 @@ instance Yesod App where
 
         pc <- widgetToPageContent $ do
             -- `touch Settings.hs` to update file helpers
-            addStylesheet $ StaticR $ css_bootstrap_min_css
+            addStylesheet $ StaticR $ css_vendor_bootstrap_min_css
             addStylesheet $ StaticR $ css_app_css
-            addScript $ StaticR $ js_jquery_min_js
-            addScript $ StaticR $ js_bootstrap_min_js
-            addScript $ StaticR $ js_angular_min_js
-            addScript $ StaticR $ js_angular_bootstrap_min_js
+            addScript $ StaticR $ js_vendor_jquery_min_js
+            addScript $ StaticR $ js_vendor_bootstrap_min_js
+            addScript $ StaticR $ js_vendor_angular_min_js
+            addScript $ StaticR $ js_vendor_angular_bootstrap_min_js
             addScript $ StaticR $ js_app_js
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
