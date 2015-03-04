@@ -8,7 +8,8 @@ body {
   height: 100%;
 }
 
-body > .container {
+body > .container,
+body > .wrapper > .container {
   padding-top: 60px;
 }
 

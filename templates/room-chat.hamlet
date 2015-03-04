@@ -1,24 +1,25 @@
 ^{navbar}
-<div.container ng-controller="RoomChatController">
-  <div.row>
-    <div.col-sm-9.messages-wrapper>
-      <div#output.messages>
-        $forall Entity _ message <- messages
-          <p>
-            <b> #{messageUsername message}
-            (#{formatTime defaultTimeLocale "%H:%M:%S" $ messageCreatedAt message}):
-            #{messageValue message}
-    <div#output.col-sm-3>
-      <table.table.table-bordered>
-        <tr.success ng-repeat="user in roomUsers">
-          <td>{{ user.name }}
-          <td>{{ user.status }}
-        <tr ng-repeat="user in roomUsers2">
-          <td>{{ user.name }}
-          <td>{{ user.status }}
-<div#footer>
+<div.wrapper ng-controller="RoomChatController">
   <div.container>
     <div.row>
-      <form#form>
-        <div.col-sm-12>
-          <input#input.form-control autofocus>
+      <div.col-sm-9.messages-wrapper>
+        <div#output.messages>
+          $forall Entity _ message <- messages
+            <p>
+              <b> #{messageUsername message}
+              (#{formatTime defaultTimeLocale "%H:%M:%S" $ messageCreatedAt message}):
+              #{messageValue message}
+      <div#output.col-sm-3>
+        <table.table.table-bordered>
+          <tr.success ng-repeat="user in roomUsers">
+            <td>{{ user.name }}
+            <td>{{ user.status }}
+          <tr ng-repeat="user in roomUsers2">
+            <td>{{ user.name }}
+            <td>{{ user.status }}
+  <div#footer>
+    <div.container>
+      <div.row>
+        <form#form ng-submit="sendMessage()">
+          <div.col-sm-12>
+            <input#input.form-control ng-model="message" autofocus>
