@@ -14,6 +14,7 @@ data AccessInfo = AccessInfo
 
 getRoomSettingsR :: RoomId -> Handler Html
 getRoomSettingsR roomId = do
+    _ <- requireAuth
     usersWithAccess' <- runDB $ do
         E.select $
             E.from $ \(user `E.LeftOuterJoin` room_access) -> do
@@ -28,4 +29,3 @@ getRoomSettingsR roomId = do
     let users = fmap mapF users'
 
     defaultLayout $ $(widgetFile "room-settings")
-

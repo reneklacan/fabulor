@@ -29,6 +29,8 @@ library
                      Handler.Rooms.RoomList
                      Handler.Rooms.RoomAccess
                      Handler.Rooms.RoomSettings
+                     Handler.Rooms.RoomAddUser
+                     Handler.Rooms.RoomRemoveUser
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

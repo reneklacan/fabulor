@@ -11,3 +11,5 @@
 /rooms RoomListR GET
 /rooms/#RoomId/users/#UserId RoomAccessR POST DELETE
 /rooms/#RoomId/settings RoomSettingsR GET 
+/rooms/#RoomId/users/#UserId/add RoomAddUserR GET
+/rooms/#RoomId/users/#UserId/remove RoomRemoveUserR GET

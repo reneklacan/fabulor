@@ -9,6 +9,8 @@
             <td>#{userEmail user}
             <td>
               $if hasAccess
-                Has access
+                <a.btn.btn-danger href=@{RoomRemoveUserR roomId uid}>
+                  Remove
               $else
-                Doesn't have access
+                <a.btn.btn-success href=@{RoomAddUserR roomId uid}>
+                  Add

@@ -29,7 +29,7 @@ angular.module('fabulor').service('webSocket', function() {
     connect();
 });
 
-angular.module('fabulor').controller('RoomChatController', function($scope, webSocket) {
+angular.module('fabulor').controller('RoomChatController', function($scope, $interval, webSocket) {
     $scope.message = '';
 
     $scope.roomUsers = [
@@ -98,13 +98,16 @@ angular.module('fabulor').controller('RoomChatController', function($scope, webS
         webSocket.send(JSON.stringify(createMessage('event', 'left the room')));
     };
 
-    setInterval(sendStatusRequest, 5000);
+    $interval(sendStatusRequest, 5000);
 });
 
 $(function() {
+    var messagesWrapper = document.querySelector('.messages-wrapper');
+    if (!messagesWrapper)
+        return;
+
     $('.messages-wrapper').height(window.innerHeight - 120);
     window.scrollTo(0, document.body.scrollHeight);
-    var messagesWrapper = document.querySelector('.messages-wrapper');
     messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
 })
 
