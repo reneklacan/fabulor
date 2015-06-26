@@ -1,0 +1,7 @@
+flags: {}
+packages:
+- '.'
+extra-deps:
+- stm-lifted-0.1.0.0
+- hfsevents-0.1.5
+resolver: nightly-2015-06-25
