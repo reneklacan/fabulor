@@ -1,19 +1,16 @@
 # Fabulor
 
-Simple chat app written in Haskell for exercise
+Simple chat app using WebSockets written in Haskell for exercise
 
 ## Install
 
 ```
-cabal install yesod-bin
 cd fabulor
-cabal sandbox init
-cabal install alex happy
-cabal install
+stack build
 ```
 
 ## Run
 
 ```
-yesod devel
+stack exec fabulor
 ```
