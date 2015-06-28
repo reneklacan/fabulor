@@ -1,6 +1,7 @@
 module Handler.Rooms.RoomSettings where
 
 import Import
+import Helper.Auth
 
 import qualified Database.Esqueleto as E
 import Database.Esqueleto ((^.),(?.))
@@ -14,7 +15,7 @@ data AccessInfo = AccessInfo
 
 getRoomSettingsR :: RoomId -> Handler Html
 getRoomSettingsR roomId = do
-    _ <- requireAuth
+    _ <- requireAdminAuth
     usersWithAccess' <- runDB $ do
         E.select $
             E.from $ \(user `E.LeftOuterJoin` room_access) -> do
