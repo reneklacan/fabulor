@@ -2,17 +2,21 @@ module Handler.Rooms.RoomCreate where
 
 import Import
 
-import Helper.Bootstrap
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
+
+import Helper.Auth
+import Helper.Bootstrap
 
 getRoomCreateR :: Handler Html
 getRoomCreateR = do
+    _ <- requireAdminAuth
     (roomWidget, enctype) <- generateFormPost roomForm
     defaultLayout $ do
         $(widgetFile "room-create")
 
 postRoomCreateR :: Handler Html
 postRoomCreateR = do
+    _ <- requireAdminAuth
     ((res, roomWidget), enctype) <- runFormPost roomForm
     case res of
         FormSuccess room -> do
@@ -31,4 +35,3 @@ roomForm = renderDivs $ Room
 roomForm' :: Form Room
 roomForm' = renderBootstrap3 bootstrapHorizontalForm $ Room
     <$> areq textField "Name" Nothing
-

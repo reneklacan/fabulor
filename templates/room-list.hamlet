@@ -7,8 +7,9 @@
           <!--th>ID-->
           <th>Room Name
           <th>
-            <div class="pull-right">
-              <a class="btn btn-success btn-sm" href=@{RoomCreateR}>Create Room
+            $if userIsAdmin user
+              <div class="pull-right">
+                <a class="btn btn-success btn-sm" href=@{RoomCreateR}>Create Room
         $forall Entity roomId room <- rooms
           <tr>
             <!--td>#{fromSqlKey $ roomId}-->
