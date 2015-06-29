@@ -2,7 +2,11 @@ module Handler.Rooms.RoomAddUser where
 
 import Import
 
+import Helper.Auth
+
 getRoomAddUserR :: RoomId -> UserId -> Handler Html
 getRoomAddUserR roomId userId = do
-    _ <- runDB $ insert $ RoomAccess userId roomId (UTCTime (fromGregorian 0 0 0) 0)
+    _ <- requireAdminAuth
+    currentTime <- liftIO getCurrentTime
+    _ <- runDB $ insert $ RoomAccess userId roomId currentTime
     redirect $ RoomSettingsR roomId

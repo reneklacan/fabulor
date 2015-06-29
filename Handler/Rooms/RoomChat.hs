@@ -10,6 +10,8 @@ import qualified Data.Map as M
 import qualified Database.Esqueleto as E
 import Database.Esqueleto ((^.))
 
+import Helper.Auth
+
 data Chat = Chat
     { chatRoomId :: RoomId
     , chatRoom :: Room
@@ -33,7 +35,7 @@ instance ToJSON RoomUserStatus where
 
 getRoomChatR :: RoomId -> Handler Html
 getRoomChatR roomId = do
-    (Entity userId user) <- requireAuth
+    (Entity userId user) <- requireRoomAuth roomId
     room <- runDB $ get404 roomId
     App {..} <- getYesod
     chan <- liftIO $ atomically $ do

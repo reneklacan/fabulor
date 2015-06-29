@@ -2,7 +2,7 @@ module Handler.Rooms.RoomCreate where
 
 import Import
 
-import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
+import Yesod.Form.Bootstrap3 (renderBootstrap3)
 
 import Helper.Auth
 import Helper.Bootstrap
@@ -17,7 +17,7 @@ getRoomCreateR = do
 postRoomCreateR :: Handler Html
 postRoomCreateR = do
     _ <- requireAdminAuth
-    ((res, roomWidget), enctype) <- runFormPost roomForm
+    ((res, _), _) <- runFormPost roomForm
     case res of
         FormSuccess room -> do
             _ <- runDB $ insert room
