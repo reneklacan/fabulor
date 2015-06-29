@@ -23,7 +23,7 @@ data Chat = Chat
 data RoomUserStatus = RoomUserStatus
     { statusUserId :: UserId
     , statusUserEmail :: Text
-    , statusUserLastSeenAt :: UTCTime
+    , statusUserLastSeenAt :: Maybe UTCTime
     } deriving Show
 
 instance ToJSON RoomUserStatus where
@@ -96,7 +96,7 @@ statusMsg chat = do
     statusEntities <- lift . runDB $ do
         updateWhere
             [RoomAccessUserId ==. chatUserId chat, RoomAccessRoomId ==. chatRoomId chat]
-            [RoomAccessLastSeenAt =. time]
+            [RoomAccessLastSeenAt =. (Just time)]
         E.select $
             E.from $ \(user `E.InnerJoin` room_access) -> do
             E.on $ user ^. UserId E.==. room_access ^. RoomAccessUserId
@@ -107,6 +107,6 @@ statusMsg chat = do
     atomically $ do
         writeTChan (chatChannel chat) $ encode $ fmap userStatusFromEntity statusEntities
 
-userStatusFromEntity :: (E.Value UserId, E.Value Text, E.Value UTCTime) -> RoomUserStatus
+userStatusFromEntity :: (E.Value UserId, E.Value Text, E.Value (Maybe UTCTime)) -> RoomUserStatus
 userStatusFromEntity (userId, email, lastSeenAt) =
     RoomUserStatus (E.unValue userId) (E.unValue email) (E.unValue lastSeenAt)
