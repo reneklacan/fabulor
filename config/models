@@ -12,12 +12,12 @@ Room
 RoomAccess
     userId UserId
     roomId RoomId
-    lastSeenAt UTCTime default=CURRENT_TIME
+    lastSeenAt UTCTime default=now()
     deriving Show
 Message
     roomId RoomId
     username Text
     type Text
     value Text
-    createdAt UTCTime default=CURRENT_TIME
+    createdAt UTCTime default=now()
     deriving Show

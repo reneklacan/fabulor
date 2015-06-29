@@ -1,11 +1,12 @@
 module Handler.Rooms.RoomSettings where
 
 import Import
-import Helper.Auth
 
 import qualified Database.Esqueleto as E
 import Database.Esqueleto ((^.),(?.))
 import Database.Persist.Sql (fromSqlKey)
+
+import Helper.Auth
 
 data AccessInfo = AccessInfo
     { accessInfoUserId :: UserId

@@ -28,7 +28,6 @@ library
                      Handler.Rooms.RoomCreate
                      Handler.Rooms.RoomDelete
                      Handler.Rooms.RoomList
-                     Handler.Rooms.RoomAccess
                      Handler.Rooms.RoomSettings
                      Handler.Rooms.RoomAddUser
                      Handler.Rooms.RoomRemoveUser
@@ -68,7 +67,7 @@ library
                  , bytestring
                  , text
                  , persistent
-                 , persistent-sqlite
+                 , persistent-postgresql
                  , persistent-template
                  , template-haskell
                  , shakespeare
@@ -136,7 +135,7 @@ test-suite test
                  , yesod-core
                  , yesod
                  , persistent
-                 , persistent-sqlite
+                 , persistent-postgresql
                  , resourcet
                  , monad-logger
                  , transformers
