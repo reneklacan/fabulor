@@ -37,7 +37,6 @@ import Handler.Rooms.RoomChat
 import Handler.Rooms.RoomCreate
 import Handler.Rooms.RoomDelete
 import Handler.Rooms.RoomList
-import Handler.Rooms.RoomAccess
 import Handler.Rooms.RoomSettings
 import Handler.Rooms.RoomAddUser
 import Handler.Rooms.RoomRemoveUser
